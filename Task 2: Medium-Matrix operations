@@ -1,0 +1,76 @@
+#include <stdio.h>
+#define MAX 10
+
+void inputMatrix(int m[MAX][MAX], int r, int c) {
+    for(int i = 0; i < r; i++)
+        for(int j = 0; j < c; j++) {
+            printf("Enter element [%d][%d]: ", i, j);
+            scanf("%d", &m[i][j]);
+        }
+}
+
+void displayMatrix(int m[MAX][MAX], int r, int c) {
+    for(int i = 0; i < r; i++) {
+        for(int j = 0; j < c; j++)
+            printf("%d\t", m[i][j]);
+        printf("\n");
+    }
+}
+
+void addMatrix(int a[MAX][MAX], int b[MAX][MAX], int r, int c) {
+    int res[MAX][MAX];
+    for(int i = 0; i < r; i++)
+        for(int j = 0; j < c; j++)
+            res[i][j] = a[i][j] + b[i][j];
+    printf("Addition Result:\n");
+    displayMatrix(res, r, c);
+}
+
+void multiplyMatrix(int a[MAX][MAX], int b[MAX][MAX], int r1, int c1, int c2) {
+    int res[MAX][MAX] = {0};
+    for(int i = 0; i < r1; i++)
+        for(int j = 0; j < c2; j++)
+            for(int k = 0; k < c1; k++)
+                res[i][j] += a[i][k] * b[k][j];
+    printf("Multiplication Result:\n");
+    displayMatrix(res, r1, c2);
+}
+
+void transposeMatrix(int a[MAX][MAX], int r, int c) {
+    int res[MAX][MAX];
+    for(int i = 0; i < r; i++)
+        for(int j = 0; j < c; j++)
+            res[j][i] = a[i][j];
+    printf("Transpose Result:\n");
+    displayMatrix(res, c, r);
+}
+
+int main() {
+    int a[MAX][MAX], b[MAX][MAX];
+    int r1, c1, r2, c2, choice;
+
+    printf("Enter rows & cols for Matrix A: ");
+    scanf("%d %d", &r1, &c1);
+    inputMatrix(a, r1, c1);
+
+    printf("Enter rows & cols for Matrix B: ");
+    scanf("%d %d", &r2, &c2);
+    inputMatrix(b, r2, c2);
+
+    printf("\n1. Addition\n2. Multiplication\n3. Transpose of A\nEnter choice: ");
+    scanf("%d", &choice);
+
+    if(choice == 1) {
+        if(r1 == r2 && c1 == c2) addMatrix(a, b, r1, c1);
+        else printf("Addition not possible! Dimensions must match.");
+    }
+    else if(choice == 2) {
+        if(c1 == r2) multiplyMatrix(a, b, r1, c1, c2);
+        else printf("Multiplication not possible! Cols of A must = Rows of B.");
+    }
+    else if(choice == 3) {
+        transposeMatrix(a, r1, c1);
+    }
+    else printf("Invalid choice!");
+    return 0;
+}
